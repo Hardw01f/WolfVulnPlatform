@@ -1,0 +1,6 @@
+
+FROM sameersbn/squid:3.5.27-2
+
+COPY ./conf /etc/squid/
+
+
