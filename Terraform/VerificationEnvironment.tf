@@ -9,17 +9,17 @@ resource "aws_vpc" "verification-vpc" {
 }
 
 resource "aws_internet_gateway" "verification-gateway" {
-  vpc_id = "${aws_vpc.verification-vpc.id}"
+  vpc_id = aws_vpc.verification-vpc.id
   tags = {
       Name = "verification_internet_getaway"
   }
 }
 
 resource "aws_route_table" "verification-routetable" {
-  vpc_id = "${aws_vpc.verification-vpc.id}"
+  vpc_id = aws_vpc.verification-vpc.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_internet_gateway.verification-gateway.id}"
+    gateway_id = aws_internet_gateway.verification-gateway.id
   }
   tags = {
     Name = "verification-routetable"
@@ -27,7 +27,7 @@ resource "aws_route_table" "verification-routetable" {
 }
 
 resource "aws_subnet" "verification-subnet" {
-  vpc_id = "${aws_vpc.verification-vpc.id}"
+  vpc_id = aws_vpc.verification-vpc.id
   cidr_block = "10.10.10.0/24"
   availability_zone = "ap-northeast-1a"
   tags = {
@@ -36,13 +36,13 @@ resource "aws_subnet" "verification-subnet" {
 }
 
 resource "aws_route_table_association" "verification_association" {
-    subnet_id = aws_subnet.verification-subnet.id
-    route_table_id = aws_route_table.verification-routetable.id
+  subnet_id = aws_subnet.verification-subnet.id
+  route_table_id = aws_route_table.verification-routetable.id
 }
 
 resource "aws_security_group" "verification-securitygroup" {
     name = "verification-sg"
-    vpc_id = "${aws_vpc.verification-vpc.id}"
+    vpc_id = aws_vpc.verification-vpc.id
     ingress {
         from_port = 22
         to_port = 22
@@ -77,7 +77,7 @@ resource "aws_security_group" "verification-securitygroup" {
 }
 
 resource "aws_key_pair" "tf-verification_key" {
-    key_name = "public_key"
+    key_name = "public_key_WVP"
     public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxKkd6i5L6/DV4qh+/DwVqlTuLeF3pyXsOL9xy9ZeU1xwZAyylwNPuw45SYq32teAOW6exPxjtYIPUDseSh6zFv7DM1tbsBsAN3GvjGHRiQVxbSu6iorGYHEeI5HJASsvEhbkPysi07jS9D6lp93j6wZcX0EYE6SnPEcjvy82MyY/Q42C6PFXz7HNjEZA366ZwIsaqZmWAcG0NMeMgRmignTuzRMZlzIRgLyE7QdLQ2KjDvTBSJof0U51evkmcIoOwDViK/M2BD852agPh3madLEMwJVfKPJGkrCObqE5EEvnGJJO7HhknwpnW/wcxfBXJPVslYwBWu9xcLkjGKCNT hardwolf@HardWolfnoMacBook-Pro.local"
 }
 
@@ -96,7 +96,7 @@ resource "aws_instance" "bastion" {
 resource "aws_eip" "bastion-eip" {
     count = var.replicaset
     vpc = true
-    instance = "${element(aws_instance.bastion.*.id, count.index)}"
+    instance = element(aws_instance.bastion.*.id, count.index)
     tags = {
         Name    =   "${format("bastion-eip-%02d",count.index + 1)}"
     }
@@ -111,15 +111,6 @@ resource "aws_instance" "verification" {
     subnet_id               = aws_subnet.verification-subnet.id
     tags = {
         Name    =   "${format("verification-%02d",count.index +1 )}"
-    }
-}
-
-resource "aws_eip" "verification-eip" {
-    count = var.replicaset
-    vpc = true
-    instance = "${element(aws_instance.verification.*.id, count.index)}"
-    tags = {
-        Name    =   "${format("verification-eip-%02d",count.index + 1)}"
     }
 }
 
