@@ -77,7 +77,7 @@ resource "aws_security_group" "verification-securitygroup" {
 }
 
 resource "aws_key_pair" "tf-verification_key" {
-    key_name = "public_key_WVP"
+    key_name = "public_key"
     public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxKkd6i5L6/DV4qh+/DwVqlTuLeF3pyXsOL9xy9ZeU1xwZAyylwNPuw45SYq32teAOW6exPxjtYIPUDseSh6zFv7DM1tbsBsAN3GvjGHRiQVxbSu6iorGYHEeI5HJASsvEhbkPysi07jS9D6lp93j6wZcX0EYE6SnPEcjvy82MyY/Q42C6PFXz7HNjEZA366ZwIsaqZmWAcG0NMeMgRmignTuzRMZlzIRgLyE7QdLQ2KjDvTBSJof0U51evkmcIoOwDViK/M2BD852agPh3madLEMwJVfKPJGkrCObqE5EEvnGJJO7HhknwpnW/wcxfBXJPVslYwBWu9xcLkjGKCNT hardwolf@HardWolfnoMacBook-Pro.local"
 }
 
