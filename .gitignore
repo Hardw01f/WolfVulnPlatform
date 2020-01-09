@@ -14,7 +14,11 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-#custom
+#terraform
 
 Terraform/key
 Terraform/variables.tf
+Terraform/*.tfstate
+Terraform/*.tfstate.backup
+Terraform/.terraform
+
